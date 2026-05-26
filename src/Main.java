@@ -5,7 +5,7 @@ import service.PokeApiService;
 
 public class Main {
     public static void main(String[] args) {
-        //criar a conexão com o banco de dados
+        //criar a connexion com o Banco de dados
         try{
             Connection conexao = DatabaseConnection.conectar();
             System.out.println("Banco conectado com sucesso");
@@ -14,7 +14,7 @@ public class Main {
         } catch (Exception e){
             e.printStackTrace();
         }
-        //criar as tabelas
+        //criar as tablas
         DatabaseInitializer.criarTabela();
 
         PokeApiService.buscarPokemon();

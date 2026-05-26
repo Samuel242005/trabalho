@@ -12,6 +12,7 @@ public class DatabaseInitializer {
                 "hp INT, " +
                 "ataque INT, " +
                 "defesa INT, " +
+                "tipo VARCHAR(50), " +
                 "level INT, " +
                 "xp INT" +
                 ")";

@@ -10,6 +10,7 @@ import com.google.gson.JsonParser;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import database.DatabaseConnection;
+import model.Pokemon;
 
 public class PokeApiService {
 
@@ -24,7 +25,7 @@ public class PokeApiService {
 
             JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
             String nome  = json.get("name").getAsString();
-            System.out.println(nome);
+            //System.out.println(nome);
 
             JsonArray stats = json.getAsJsonArray("stats");
 
@@ -53,11 +54,25 @@ public class PokeApiService {
                     .get("name")
                     .getAsString();
 
+            /*
             System.out.println(hp);
             System.out.println(ataque);
             System.out.println(defesa);
             System.out.println(tipo);
 
+            Pokemon pokemon = new Pokemon(
+                    25,
+                    nome,
+                    hp,
+                    ataque,
+                    defesa,
+                    tipo,
+                    5,
+                    0
+            );
+
+            System.out.println(pokemon.getNome());
+            */
             Connection conexao = DatabaseConnection.conectar();
 
             String sql = "INSERT INTO  pokemon VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -71,7 +86,7 @@ public class PokeApiService {
             stmt.setInt(7, 0);
             stmt.setInt(8, 0);
             stmt.execute();
-            System.out.println("Pokemon salvo!");
+            //System.out.println("Pokemon salvo!");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,5 +1,8 @@
 package batalha;
+import model.Move;
 import model.Pokemon;
+import service.EvolutionService;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Batalha {
@@ -20,7 +23,7 @@ public class Batalha {
             System.out.println("Poções restantes: " + pocoes);
 
 
-            System.out.println("\n1 - Atacar");
+            System.out.println("\n1 - Usar movimento");
             System.out.println("2 - Usar Poção");
             System.out.println("3 - Fugir");
 
@@ -28,7 +31,43 @@ public class Batalha {
 
             if (opcao == 1 )
             {
-                atacar(jogador, inimigo);
+                if (jogador.getMovimentos().isEmpty()) {
+
+                    System.out.println(
+                            "Nenhum movimento carregado para esse Pokémon!"
+                    );
+
+                    continue;
+                }
+                Move movimento = jogador.getMovimentos().get(0);
+                System.out.println("Escolha um movimento:");
+
+                for (int i = 0; i < jogador.getMovimentos().size(); i++) {
+
+                    Move move = jogador.getMovimentos().get(i);
+
+                    System.out.println(
+                            (i + 1) + " - " +
+                                    move.getNome() +
+                                    " | PP: " +
+                                    move.getPpAtual() + "/" + move.getPpMax() +
+                                    " | Tipo: " +
+                                    move.getTipo() +
+                                    " | Precisão: " +
+                                    move.getPrecisao()
+                    );
+                }
+
+                int escolhaMovimento = scanner.nextInt();
+
+                Move movimentoEscolhido =
+                        jogador.getMovimentos().get(escolhaMovimento - 1);
+
+                atacarComMovimento(
+                        jogador,
+                        inimigo,
+                        movimentoEscolhido
+                );
             }
 
             else if (opcao == 2) {
@@ -61,10 +100,17 @@ public class Batalha {
                 jogador.setXp(jogador.getXp() + 50);
                 if (jogador.getXp() >= 100){
                     jogador.setLevel(jogador.getLevel() + 1);
+                    jogador.setHpMax(jogador.getHpMax() + 5);
+                    jogador.setHp(jogador.getHp() + 5);
+                    jogador.setAtaque(jogador.getAtaque() + 2);
+                    jogador.setDefesa(jogador.getDefesa() + 2);
                     jogador.setXp(jogador.getXp() - 100);
+                    EvolutionService.verificarEvolucao(jogador);
 
-                    System.out.println(jogador.getNome() + " Subiu para o nivel "
-                                     + jogador.getLevel() + " !");
+                    System.out.println(jogador.getNome() + " Subiu para o nivel " + jogador.getLevel() + " !");
+                    System.out.println("HP +5");
+                    System.out.println("Ataque +2");
+                    System.out.println("Defesa +2");
                 }
                 System.out.println(jogador.getNome() + " ganhou 50 XP !");
                 System.out.println("XP ATUAL: " + jogador.getXp());
@@ -96,4 +142,43 @@ public class Batalha {
             );
             System.out.println();
         }
+    public static void atacarComMovimento(Pokemon atacante, Pokemon alvo,Move movimento) {
+
+        Random random = new Random();
+
+        double sorteio = random.nextDouble() * 100;
+
+        if (movimento.getPpAtual() <= 0) {
+            System.out.println("Esse movimento não tem mais PP!");
+            return;
+        }
+
+        if (sorteio > movimento.getPrecisao()) {
+
+            System.out.println(
+                    atacante.getNome()
+                            + " errou o golpe!"
+            );
+
+            movimento.gastarPP();
+
+            return;
+        }
+
+        movimento.gastarPP();
+
+        int dano = movimento.getPoder() + atacante.getAtaque() - alvo.getDefesa();
+
+        if (dano < 1) {
+            dano = 1;
+        }
+
+        alvo.setHp(alvo.getHp() - dano);
+
+        System.out.println(atacante.getNome() + " usou " + movimento.getNome() + "!");
+
+        System.out.println("PP: " + movimento.getPpAtual() + "/" + movimento.getPpMax());
+
+        System.out.println(alvo.getNome() + " HP: " + alvo.getHp() + "/" + alvo.getHpMax());
     }
+}

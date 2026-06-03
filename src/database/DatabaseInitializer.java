@@ -27,12 +27,24 @@ public class DatabaseInitializer {
                 "precisao DOUBLE " +
                 ")";
 
+        String sqlSave = "CREATE TABLE IF NOT EXISTS save_game ("+
+                "id INT PRIMARY KEY, " +
+                "nome VARCHAR(100), " +
+                "hp INT, " +
+                "ataque INT, " +
+                "defesa INT, " +
+                "tipo VARCHAR(50), " +
+                "level INT, " +
+                "xp INT"+
+                ")";
+
 
         try {
             Connection conexao = DatabaseConnection.conectar();
             Statement stmt = conexao.createStatement();
             stmt.execute(sqlPokemon);
             stmt.execute(sqlMove);
+            stmt.execute(sqlSave);
             System.out.println("Tabelas criadas");
             conexao.close();
         } catch (Exception e){

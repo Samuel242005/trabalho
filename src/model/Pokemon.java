@@ -1,4 +1,6 @@
 package model;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pokemon {
     private int id;
@@ -10,6 +12,7 @@ public class Pokemon {
     private int level;
     private int xp;
     private int hpMax;
+    private List<Move> movimentos = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -102,6 +105,13 @@ public class Pokemon {
         this.level = level;
         this.xp = xp;
         this.hpMax = hp;
+    }
+    public List<Move> getMovimentos() {
+        return movimentos;
+    }
+
+    public void adicionarMovimento(Move movimento) {
+        movimentos.add(movimento);
     }
 
 }

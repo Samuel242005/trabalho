@@ -15,7 +15,7 @@ public class Main {
         //criar a connexion com o Banco de dados
         try{
             Connection conexao = DatabaseConnection.conectar();
-            System.out.println("Banco conectado com sucesso");
+            //System.out.println("Banco conectado com sucesso");
 
             conexao.close();
         } catch (Exception e){
@@ -48,9 +48,9 @@ public class Main {
 
             if (jogador != null) {
 
-                System.out.println("Bem-vindo de volta, "+ jogador.getNome());
+                System.out.println("Bem-vindo de volta, treinador");
 
-                Pokemon inimigo =PokeApiService.buscarPokemon(basicos[random.nextInt(basicos.length)]);
+                Pokemon inimigo = PokeApiService.buscarPokemon(basicos[random.nextInt(basicos.length)]);
 
                 Batalha.iniciar(jogador, inimigo);
 
@@ -83,7 +83,7 @@ public class Main {
         System.out.println("Escolha seu Pokémon:\n");
 
         System.out.println("1 - " + p1.getNome());
-        System.out.println("HP: " + p1.getHp());
+        System  .out.println("HP: " + p1.getHp());
         System.out.println("ATK: " + p1.getAtaque());
         System.out.println("DEF: " + p1.getDefesa());
         System.out.println("TIPO: " + p1.getTipo());

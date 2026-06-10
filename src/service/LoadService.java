@@ -16,15 +16,11 @@ public class LoadService {
 
             Statement stmt = conexao.createStatement();
 
-            ResultSet rs = stmt.executeQuery(
-                    "SELECT * FROM save_game LIMIT 1"
-            );
+            ResultSet rs = stmt.executeQuery("SELECT * FROM save_game LIMIT 1");
 
             if (rs.next()) {
 
-                Pokemon pokemon = PokeApiService.buscarPokemon(
-                        rs.getInt("id")
-                );
+                Pokemon pokemon = PokeApiService.buscarPokemon(rs.getInt("id"));
 
                 pokemon.setHp(rs.getInt("hp"));
                 pokemon.setAtaque(rs.getInt("ataque"));
@@ -32,7 +28,16 @@ public class LoadService {
                 pokemon.setLevel(rs.getInt("level"));
                 pokemon.setXp(rs.getInt("xp"));
 
-                System.out.println("Jogo carregado!");
+                MoveLearningService.verificarNovosGolpes(pokemon);
+
+                System.out.println("\n==============================");
+                System.out.println("      JORNADA CARREGADA");
+                System.out.println("==============================");
+                System.out.println("Pokémon: " + pokemon.getNome());
+                System.out.println("Nível: " + pokemon.getLevel());
+                System.out.println("HP: " + pokemon.getHp() + "/" + pokemon.getHpMax());
+                System.out.println("XP: " + pokemon.getXp());
+                System.out.println("==============================\n");
 
                 conexao.close();
 

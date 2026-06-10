@@ -92,23 +92,20 @@ public class EvolutionService {
         }
 
         for (int i = 0; i < evolucoes.size(); i++) {
-            verificarNaChain(
-                    pokemon,
-                    evolucoes.get(i).getAsJsonObject()
-            );
+            verificarNaChain(pokemon, evolucoes.get(i).getAsJsonObject());
         }
     }
 
     private static void evoluir(Pokemon pokemon, String novoNome) {
 
-        System.out.println(
-                pokemon.getNome()
-                        + " evoluiu para "
-                        + novoNome
-                        + "!"
-        );
+        System.out.println(pokemon.getNome() + " evoluiu para " + novoNome + "!");
 
-        pokemon.setNome(novoNome);
+        Pokemon evoluido = PokeApiService.buscarPokemon(novoNome);
+
+        pokemon.setId(evoluido.getId());
+        pokemon.setNome(evoluido.getNome());
+        pokemon.setTipo(evoluido.getTipo());
+
         pokemon.setHpMax(pokemon.getHpMax() + 10);
         pokemon.setHp(pokemon.getHpMax());
         pokemon.setAtaque(pokemon.getAtaque() + 5);

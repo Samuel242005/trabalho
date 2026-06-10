@@ -4,6 +4,7 @@ import model.Pokemon;
 import service.EvolutionService;
 import java.util.Random;
 import java.util.Scanner;
+import service.MoveLearningService;
 
 public class Batalha {
 
@@ -12,8 +13,14 @@ public class Batalha {
     {
         int pocoes = 5;
         int turno = 1;
+        System.out.println("\n==============================");
+        System.out.println("          BATALHA");
+        System.out.println("==============================");
         System.out.println(jogador.getNome() + " VS " + inimigo.getNome());
+        System.out.println("==============================");
+
         Scanner scanner = new Scanner(System.in);
+
         while (jogador.getHp() > 0 && inimigo.getHp() > 0)
         {
             System.out.println("\n=== TURNO " + turno + " ====");
@@ -40,34 +47,22 @@ public class Batalha {
                     continue;
                 }
                 Move movimento = jogador.getMovimentos().get(0);
-                System.out.println("Escolha um movimento:");
+                System.out.println("\nEscolha um movimento:");
 
                 for (int i = 0; i < jogador.getMovimentos().size(); i++) {
 
                     Move move = jogador.getMovimentos().get(i);
 
-                    System.out.println(
-                            (i + 1) + " - " +
-                                    move.getNome() +
-                                    " | PP: " +
-                                    move.getPpAtual() + "/" + move.getPpMax() +
-                                    " | Tipo: " +
-                                    move.getTipo() +
-                                    " | Precisão: " +
-                                    move.getPrecisao()
-                    );
+                    System.out.println((i + 1) + " - " + move.getNome() + " | PP: " +
+                            move.getPpAtual() + "/" + move.getPpMax() +
+                            " | Tipo: " + move.getTipo() + " | Precisão: " + move.getPrecisao());
                 }
 
                 int escolhaMovimento = scanner.nextInt();
 
-                Move movimentoEscolhido =
-                        jogador.getMovimentos().get(escolhaMovimento - 1);
+                Move movimentoEscolhido = jogador.getMovimentos().get(escolhaMovimento - 1);
 
-                atacarComMovimento(
-                        jogador,
-                        inimigo,
-                        movimentoEscolhido
-                );
+                atacarComMovimento(jogador, inimigo, movimentoEscolhido);
             }
 
             else if (opcao == 2) {
@@ -76,7 +71,6 @@ public class Batalha {
                     pocoes--;
                     System.out.println("Poção usada! HP atual: " + jogador.getHp() +"/"+ jogador.getHpMax());
                     System.out.println("Poções restantes: " + pocoes);
-                    atacar(inimigo, jogador);
 
                     turno++;
                     continue;
@@ -106,6 +100,7 @@ public class Batalha {
                     jogador.setDefesa(jogador.getDefesa() + 2);
                     jogador.setXp(jogador.getXp() - 100);
                     EvolutionService.verificarEvolucao(jogador);
+                    MoveLearningService.verificarNovosGolpes(jogador);
 
                     System.out.println(jogador.getNome() + " Subiu para o nivel " + jogador.getLevel() + " !");
                     System.out.println("HP +5");
@@ -155,10 +150,7 @@ public class Batalha {
 
         if (sorteio > movimento.getPrecisao()) {
 
-            System.out.println(
-                    atacante.getNome()
-                            + " errou o golpe!"
-            );
+            System.out.println(atacante.getNome() + " errou o golpe!");
 
             movimento.gastarPP();
 
@@ -175,7 +167,7 @@ public class Batalha {
 
         alvo.setHp(alvo.getHp() - dano);
 
-        System.out.println(atacante.getNome() + " usou " + movimento.getNome() + "!");
+        System.out.println("\n" + atacante.getNome() + " usou " + movimento.getNome() + "!");
 
         System.out.println("PP: " + movimento.getPpAtual() + "/" + movimento.getPpMax());
 
